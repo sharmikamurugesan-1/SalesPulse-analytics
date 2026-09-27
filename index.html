@@ -6,181 +6,370 @@
   <title>SalesPulse — Executive BI & Financial Analytics Engine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg: #090a10;
-      --card: rgba(20, 22, 35, 0.85);
-      --card-alt: rgba(28, 31, 48, 0.6);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-focus: rgba(129, 140, 248, 0.5);
-      --indigo: #818cf8;
-      --indigo-glow: rgba(129, 140, 248, 0.35);
-      --peach: #fedec8;
-      --green: #34d399;
-      --amber: #fbbf24;
-      --red: #f87171;
+      --bg: #030712;
+      --bg-surface: #0b1329;
+      --bg-panel: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(59, 130, 246, 0.18);
+      --card-border-hover: rgba(96, 165, 250, 0.45);
+      --blue: #3b82f6;
+      --blue-electric: #60a5fa;
+      --blue-glow: rgba(59, 130, 246, 0.3);
+      --blue-dark: #1d4ed8;
+      --cyan: #06b6d4;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
       --text: #f8fafc;
-      --muted: #94a3b8;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(30, 58, 138, 0.18) 0%, transparent 55%);
       color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: var(--font-sans);
       line-height: 1.6;
-      padding: 30px 20px 60px;
+      padding: 24px 20px 60px;
       min-height: 100vh;
     }
-    .container { max-width: 1200px; margin: 0 auto; }
+    .container { max-width: 1300px; margin: 0 auto; }
 
-    /* Top bar */
+    /* Top Navigation */
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 24px;
       padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--card-border);
+      flex-wrap: wrap;
+      gap: 12px;
     }
     .back-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 13.5px;
       font-weight: 600;
-      color: var(--muted);
+      color: var(--text-muted);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .back-link:hover { color: var(--indigo); }
-    .api-badge {
+    .back-link:hover { color: var(--blue-electric); }
+    .top-badges {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .live-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 12px;
+      font-weight: 600;
       padding: 4px 12px;
       border-radius: 9999px;
-      background: rgba(129, 140, 248, 0.1);
-      border: 1px solid rgba(129, 140, 248, 0.3);
-      color: var(--indigo);
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: var(--blue-electric);
+      cursor: help;
     }
-    .api-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue-electric);
+      box-shadow: 0 0 8px var(--blue-electric);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .repo-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-electric);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid var(--card-border);
+      transition: all 0.2s;
+    }
+    .repo-link:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--blue-electric);
+    }
 
     /* Hero */
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      background: rgba(129, 140, 248, 0.1);
-      border: 1px solid rgba(129, 140, 248, 0.25);
+      padding: 5px 14px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
       border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--indigo);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--blue-electric);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 12px;
     }
     h1 {
-      font-size: clamp(28px, 4vw, 42px);
+      font-size: clamp(28px, 4vw, 40px);
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       margin-bottom: 8px;
+      color: #fff;
+    }
+    h1 span {
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     p.lead {
-      font-size: 16px;
-      color: var(--muted);
+      font-size: 15.5px;
+      color: var(--text-muted);
       margin-bottom: 24px;
-      max-width: 820px;
+      max-width: 860px;
     }
 
-    /* Data Ingestion & Profile Banner */
-    .ingest-box {
-      background: var(--card);
-      border: 1px solid var(--border);
+    /* Pre-Seeded Dataset Scenarios */
+    .sample-section {
+      background: var(--bg-panel);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 20px;
+      padding: 16px 20px;
       margin-bottom: 24px;
+      backdrop-filter: blur(16px);
+    }
+    .sample-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 12px;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 8px;
     }
-    .dataset-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill {
-      padding: 6px 14px;
-      border-radius: 9999px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      color: var(--muted);
+    .sample-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sample-title .hint {
       font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+    .sample-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sample-pill {
+      padding: 7px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-size: 12.5px;
       font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .sample-pill:hover {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: rgba(96, 165, 250, 0.35);
+      color: var(--text);
+    }
+    .sample-pill.active {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--blue-electric);
+      color: var(--blue-electric);
+      box-shadow: 0 0 14px var(--blue-glow);
+    }
+    .sample-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .badge-ok { background: rgba(16, 185, 129, 0.15); color: var(--emerald); }
+    .badge-warn { background: rgba(245, 158, 11, 0.2); color: var(--amber); }
+    .badge-err { background: rgba(239, 68, 68, 0.2); color: var(--red); }
+    .badge-info { background: rgba(59, 130, 246, 0.2); color: var(--blue-electric); }
+
+    /* Health & Status Scorecard */
+    .health-bar {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .health-chip {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .health-chip strong { color: #fff; }
+
+    /* Signature Interaction: Recalculating Micro-State */
+    .recalculating-pill {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--blue-electric);
+      color: var(--blue-electric);
+      animation: pulseShimmer 1s infinite alternate;
+    }
+    @keyframes pulseShimmer {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+    .recalc-spin {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--blue-electric);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Active Drill-Down Filter Bar */
+    .drilldown-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid var(--blue-electric);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #fff;
+    }
+    .drilldown-bar.show { display: flex; }
+    .btn-clear-drill {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .pill:hover, .pill.active {
-      background: rgba(129, 140, 248, 0.15);
-      border-color: rgba(129, 140, 248, 0.4);
-      color: #fff;
-    }
-    .health-scorecard {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255,255,255,0.03);
-      padding: 8px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-    .health-val { font-size: 18px; font-weight: 800; color: var(--green); }
+    .btn-clear-drill:hover { background: rgba(239, 68, 68, 0.3); border-color: var(--red); }
 
     /* Filter Bar */
     .filter-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr) auto;
       gap: 12px;
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 16px;
+      padding: 16px 20px;
       margin-bottom: 24px;
       align-items: end;
+      backdrop-filter: blur(16px);
     }
-    @media (max-width: 860px) { .filter-bar { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 900px) { .filter-bar { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .filter-bar { grid-template-columns: 1fr; } }
     .filter-group { display: flex; flex-direction: column; gap: 4px; }
-    .filter-label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; }
+    .filter-label { font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; font-weight: 600; }
     .filter-select, .filter-input {
-      background: #06070a;
-      border: 1px solid var(--border);
+      background: #060b18;
+      border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       color: #fff;
       font-size: 13px;
       outline: none;
       font-family: inherit;
+      transition: border-color 0.2s;
     }
-    .filter-select:focus, .filter-input:focus { border-color: var(--border-focus); }
+    .filter-select:focus, .filter-input:focus {
+      border-color: var(--blue-electric);
+      box-shadow: 0 0 10px var(--blue-glow);
+    }
 
-    /* KPI Grid */
+    /* Executive KPI Grid */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 14px;
       margin-bottom: 24px;
     }
-    @media (max-width: 960px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 600px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 1024px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px) { .kpi-grid { grid-template-columns: 1fr; } }
+
     .kpi-card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      border: 1px solid var(--card-border);
       border-radius: 14px;
       padding: 18px;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      transition: all 0.2s;
+      position: relative;
     }
-    .kpi-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
-    .kpi-val { font-size: 24px; font-weight: 800; color: #fff; margin-top: 4px; }
+    .kpi-card:hover { border-color: var(--card-border-hover); transform: translateY(-1px); }
+    .kpi-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .kpi-val {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      margin-top: 4px;
+      color: #fff;
+    }
+    .kpi-sub {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
 
     /* Charts Grid */
     .charts-grid {
@@ -189,141 +378,308 @@
       gap: 24px;
       margin-bottom: 28px;
     }
-    @media (max-width: 860px) { .charts-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 960px) { .charts-grid { grid-template-columns: 1fr; } }
+
     .chart-box {
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      border: 1px solid var(--card-border);
       border-radius: 18px;
       padding: 22px;
       backdrop-filter: blur(20px);
+      position: relative;
     }
     .chart-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .chart-title { font-size: 15px; font-weight: 700; }
+    .chart-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chart-hint {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
 
-    /* Data Table Card */
+    /* Transactions Table Card */
     .table-card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      border: 1px solid var(--card-border);
       border-radius: 18px;
       padding: 22px;
-      margin-bottom: 24px;
+      backdrop-filter: blur(20px);
+    }
+    .table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .active-filter-summary {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-tag {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: var(--blue-electric);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .table-responsive {
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow-x: auto;
+      background: #020617;
     }
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
-      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-family: var(--font-mono);
     }
     .data-table th {
-      background: rgba(255,255,255,0.03);
+      background: rgba(59, 130, 246, 0.06);
       padding: 8px 10px;
       text-align: left;
       font-size: 11px;
-      color: var(--muted);
+      color: var(--text-muted);
       text-transform: uppercase;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--card-border);
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
     }
+    .data-table th:hover { color: var(--blue-electric); }
     .data-table td {
       padding: 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .clickable-row:hover { background: rgba(59, 130, 246, 0.08); }
+
     .badge-outlier {
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 10px;
       font-weight: 700;
-      background: rgba(248, 113, 113, 0.15);
+      background: rgba(239, 68, 68, 0.15);
       color: var(--red);
-      border: 1px solid rgba(248, 113, 113, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
-    .btn-action {
-      padding: 9px 16px;
+    /* Buttons */
+    .btn-act {
+      padding: 8px 14px;
       border-radius: 8px;
       font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.2s;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
     }
-    .btn-action:hover { background: rgba(255,255,255,0.08); }
+    .btn-act:hover {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--blue-electric);
+      color: #fff;
+    }
     .btn-primary {
-      background: linear-gradient(135deg, #818cf8, #6366f1);
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
       border: none;
       color: #fff;
-      box-shadow: 0 0 20px var(--indigo-glow);
+      font-weight: 700;
+      box-shadow: 0 0 16px var(--blue-glow);
     }
-    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(96, 165, 250, 0.45);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #0b1329;
+      border: 1px solid var(--blue-electric);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 640px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: #fff; }
+    .json-code {
+      background: #020617;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: #93c5fd;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Navigation Top Bar -->
     <div class="top-bar">
-      <a href="https://sharmikamurugesan-1.github.io/sharmika-portfolio/" class="back-link">
+      <a href="https://sharmikamurugesan-1.github.io/sharmika-portfolio/#case-salespulse" class="back-link">
         ← Back to Sharmika's Portfolio
       </a>
-      <div style="display: flex; gap: 12px; align-items: center;">
-        <span class="api-badge"><span class="api-dot"></span> Dual-Mode ETL Ready</span>
-        <a href="https://github.com/sharmikamurugesan-1/SalesPulse-analytics" target="_blank" class="back-link">
+      <div class="top-badges">
+        <span class="live-badge" title="Interactive client-side OLAP analytics. Connect local Flask on :5000 for server SQLite sync.">
+          <span class="live-dot"></span> LIVE BI ENGINE
+        </span>
+        <a href="https://github.com/sharmikamurugesan-1/SalesPulse-analytics" target="_blank" class="repo-link">
           GitHub Repo ↗
         </a>
       </div>
     </div>
 
-    <div class="hero-badge">📊 Case Study 02 — Executive Business Intelligence</div>
-    <h1>SalesPulse Analytics Engine</h1>
+    <!-- Header Section -->
+    <div class="hero-badge">📊 PRODUCTION ANALYTICS — PROJECT 02</div>
+    <h1>SalesPulse <span>Executive BI & Financial Analytics</span></h1>
     <p class="lead">
-      Real-time transaction profiling, automated IQR anomaly detection, dynamic multidimensional slicing, and executive KPI narratives.
+      Real-time transaction profiling, automated IQR anomaly detection, multi-dimensional slicing, interactive chart drill-downs, and instant executive briefing generation.
     </p>
 
-    <!-- Ingestion & Profiling Bar -->
-    <div class="ingest-box">
-      <div>
-        <div style="font-size: 12px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.5px;">Select Enterprise Dataset:</div>
-        <div class="dataset-pills">
-          <button class="pill active" onclick="loadDataset('saas')">Cloud SaaS Subscriptions (150 txns)</button>
-          <button class="pill" onclick="loadDataset('retail')">Global Retail Hardware (120 txns)</button>
-          <button class="pill" onclick="loadDataset('services')">Professional Services (90 txns)</button>
-          <button class="pill" onclick="document.getElementById('csvUpload').click()">+ Upload Custom CSV</button>
-          <input type="file" id="csvUpload" style="display: none;" accept=".csv" onchange="handleCsvUpload(event)">
+    <!-- Pre-Seeded Dataset Scenarios -->
+    <div class="sample-section">
+      <div class="sample-header">
+        <div class="sample-title">
+          <span>🎯 Select Enterprise Dataset Scenario:</span>
+          <span class="hint">Instant pre-seeded business models — test seasonal surges, downturns, and data hygiene</span>
+        </div>
+        <div class="recalculating-pill" id="recalcPill">
+          <span class="recalc-spin"></span>
+          <span>Recalculating OLAP slices...</span>
         </div>
       </div>
 
-      <div class="health-scorecard">
-        <div>
-          <div style="font-size: 10.5px; text-transform: uppercase; color: var(--muted);">Data Health Score</div>
-          <div class="health-val" id="healthScore">98.4% (Grade A+)</div>
+      <div class="sample-pills">
+        <button class="sample-pill active" onclick="loadDatasetScenario('saas')">
+          <span>Steady-Growth SaaS</span>
+          <span class="sample-badge badge-ok">+14.2% MoM</span>
+        </button>
+        <button class="sample-pill" onclick="loadDatasetScenario('retail')">
+          <span>Global Retail Hardware</span>
+          <span class="sample-badge badge-info">$240k 12-Mo</span>
+        </button>
+        <button class="sample-pill" onclick="loadDatasetScenario('holiday')">
+          <span>Q4 Holiday E-Comm Surge</span>
+          <span class="sample-badge badge-ok">+85% Volume</span>
+        </button>
+        <button class="sample-pill" onclick="loadDatasetScenario('declining')">
+          <span>Downturn / Declining Business</span>
+          <span class="sample-badge badge-err">-18.4% MoM</span>
+        </button>
+        <button class="sample-pill" onclick="loadDatasetScenario('messy')">
+          <span>Messy Data (Nulls & Dups)</span>
+          <span class="sample-badge badge-warn">Health 74.2%</span>
+        </button>
+        <button class="sample-pill" onclick="loadDatasetScenario('enterprise')">
+          <span>Enterprise B2B Large Deals</span>
+          <span class="sample-badge badge-info">250+ Contracts</span>
+        </button>
+        <button class="sample-pill" onclick="document.getElementById('csvUpload').click()">
+          <span>+ Upload Custom CSV</span>
+        </button>
+        <input type="file" id="csvUpload" style="display: none;" accept=".csv" onchange="handleCsvUpload(event)">
+      </div>
+
+      <!-- Health Bar -->
+      <div class="health-bar">
+        <div class="health-chip">
+          <span>Data Hygiene Score:</span>
+          <strong id="healthScore" style="color: var(--emerald);">98.4% (Grade A+)</strong>
         </div>
-        <div style="border-left: 1px solid var(--border); padding-left: 12px;">
-          <div style="font-size: 10.5px; text-transform: uppercase; color: var(--muted);">Outliers Flagged</div>
-          <div style="font-size: 16px; font-weight: 700; color: var(--red);" id="outlierCount">2 IQR Anomaly</div>
+        <div class="health-chip">
+          <span>IQR Outliers Detected:</span>
+          <strong id="outlierCount" style="color: var(--red);">2 Anomalies</strong>
+        </div>
+        <div class="health-chip">
+          <span>Dataset Model:</span>
+          <strong id="datasetModelName">Cloud SaaS Subscription Ledger</strong>
         </div>
       </div>
+    </div>
+
+    <!-- Active Drill-Down Banner (Signature Interaction) -->
+    <div class="drilldown-bar" id="drilldownBanner">
+      <div>
+        <span>🔍 <strong>Active Interactive Drill-down:</strong> Filtered by <span id="drilldownDesc" style="color: var(--blue-electric); font-weight: 700;">Category: Cloud</span></span>
+      </div>
+      <button class="btn-clear-drill" onclick="clearDrilldown()">Clear Drill-down ✕</button>
     </div>
 
     <!-- Filter Bar -->
     <div class="filter-bar">
       <div class="filter-group">
         <label class="filter-label">Region Filter</label>
-        <select class="filter-select" id="regionFilter" onchange="applyFilters()">
-          <option value="all">All Regions</option>
-          <option value="North">North America</option>
+        <select class="filter-select" id="regionFilter" onchange="triggerFilterRecalc()">
+          <option value="all">All Regions (Global)</option>
+          <option value="North America">North America</option>
           <option value="Europe">Europe</option>
-          <option value="Asia">Asia-Pacific</option>
-          <option value="Latam">Latin America</option>
+          <option value="Asia-Pacific">Asia-Pacific</option>
+          <option value="Latin America">Latin America</option>
         </select>
       </div>
 
       <div class="filter-group">
         <label class="filter-label">Product Category</label>
-        <select class="filter-select" id="categoryFilter" onchange="applyFilters()">
+        <select class="filter-select" id="categoryFilter" onchange="triggerFilterRecalc()">
           <option value="all">All Categories</option>
           <option value="Software">Software</option>
           <option value="Cloud">Cloud Services</option>
@@ -334,87 +690,130 @@
 
       <div class="filter-group">
         <label class="filter-label">Start Date</label>
-        <input type="date" class="filter-input" id="startDateFilter" onchange="applyFilters()">
+        <input type="date" class="filter-input" id="startDateFilter" onchange="triggerFilterRecalc()">
       </div>
 
       <div class="filter-group">
         <label class="filter-label">End Date</label>
-        <input type="date" class="filter-input" id="endDateFilter" onchange="applyFilters()">
+        <input type="date" class="filter-input" id="endDateFilter" onchange="triggerFilterRecalc()">
       </div>
 
       <div>
-        <button class="btn-action btn-primary" onclick="generateExecutiveReport()">📥 Executive Briefing</button>
+        <button class="btn-act btn-primary" onclick="generateExecutiveReport()">📥 Executive Briefing</button>
       </div>
     </div>
 
-    <!-- KPI Grid -->
+    <!-- Top Executive KPI Grid -->
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-lbl">Gross Invoiced Revenue</div>
-        <div class="kpi-val" style="color: #38bdf8;" id="kpiRevenue">$0.00</div>
+        <div class="kpi-val" style="color: #60a5fa;" id="kpiRevenue">$0.00</div>
+        <div class="kpi-sub">Total billed volume</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-lbl">Net Operating Profit</div>
-        <div class="kpi-val" style="color: var(--green);" id="kpiProfit">$0.00</div>
+        <div class="kpi-val" style="color: var(--emerald);" id="kpiProfit">$0.00</div>
+        <div class="kpi-sub">After delivery costs</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-lbl">Average Margin</div>
-        <div class="kpi-val" style="color: var(--peach);" id="kpiMargin">0.0%</div>
+        <div class="kpi-lbl">Gross Margin %</div>
+        <div class="kpi-val" style="color: #cbd5e1;" id="kpiMargin">0.0%</div>
+        <div class="kpi-sub">Blended profitability</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-lbl">Month-over-Month</div>
-        <div class="kpi-val" style="color: var(--indigo);" id="kpiMoM">+0.0%</div>
+        <div class="kpi-val" style="color: var(--blue-electric);" id="kpiMoM">+0.0%</div>
+        <div class="kpi-sub" id="kpiMoMSub">vs preceding period</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-lbl">Avg Order Value (AOV)</div>
         <div class="kpi-val" style="color: #fff;" id="kpiAOV">$0.00</div>
+        <div class="kpi-sub">Ticket size per txn</div>
       </div>
     </div>
 
-    <!-- Charts -->
+    <!-- Charts Grid (Interactive Drill-Down) -->
     <div class="charts-grid">
       <div class="chart-box">
         <div class="chart-header">
-          <div class="chart-title">Revenue & Profit Trajectory (Month-over-Month)</div>
+          <div class="chart-title">
+            <span>📈 Revenue & Profit Trajectory</span>
+          </div>
+          <span class="chart-hint">💡 Click month dot to drill-down</span>
         </div>
         <canvas id="revChart" height="200"></canvas>
       </div>
 
       <div class="chart-box">
         <div class="chart-header">
-          <div class="chart-title">Category Revenue Contribution</div>
+          <div class="chart-title">
+            <span>🍩 Category Revenue Mix</span>
+          </div>
+          <span class="chart-hint">💡 Click segment to slice</span>
         </div>
         <canvas id="catChart" height="200"></canvas>
       </div>
     </div>
 
-    <!-- Transactions Table -->
+    <!-- Transactions Table Card -->
     <div class="table-card">
-      <div class="chart-header">
-        <div class="chart-title">Validated Transactions & Anomaly Diagnostics</div>
-        <button class="btn-action" onclick="exportCleanedCSV()">Export Cleaned CSV</button>
+      <div class="table-toolbar">
+        <div>
+          <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px;">
+            <span>📋 Validated Transactions & Outlier Telemetry</span>
+          </div>
+          <div class="active-filter-summary" id="activeFilterSummary">
+            <span>Active Filters:</span>
+            <span class="filter-tag" id="tagRegion">Region: All</span>
+            <span class="filter-tag" id="tagCategory">Category: All</span>
+            <span class="filter-tag" id="tagCount">0 Records</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-act" onclick="exportCleanedCSV()">📥 Export CSV</button>
+        </div>
       </div>
-      <div style="overflow-x: auto;">
+
+      <div class="table-responsive">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Txn ID</th>
-              <th>Date</th>
-              <th>Region</th>
-              <th>Category</th>
-              <th>Units</th>
-              <th>Unit Price</th>
-              <th>Revenue</th>
-              <th>Profit</th>
-              <th>Margin</th>
+              <th onclick="sortTable('Transaction_ID')">Txn ID ↕</th>
+              <th onclick="sortTable('Date')">Date ↕</th>
+              <th onclick="sortTable('Region')">Region ↕</th>
+              <th onclick="sortTable('Category')">Category ↕</th>
+              <th onclick="sortTable('Units')">Units ↕</th>
+              <th onclick="sortTable('Unit_Price')">Price ↕</th>
+              <th onclick="sortTable('Revenue')" style="text-align: right;">Revenue ↕</th>
+              <th onclick="sortTable('Profit')" style="text-align: right;">Profit ↕</th>
+              <th onclick="sortTable('Margin_Pct')">Margin ↕</th>
               <th>Quality</th>
+              <th style="text-align: center;">Action</th>
             </tr>
           </thead>
-          <tbody id="txnsTableBody">
-            <!-- Rendered by JS -->
-          </tbody>
+          <tbody id="txnsTableBody"></tbody>
         </table>
       </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+        <span style="font-size: 12px; color: var(--text-dim);" id="tableMetaInfo">Showing 0 of 0 records</span>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn-act" style="padding: 4px 10px; font-size: 11.5px;" id="btnPrevPage" onclick="prevPage()">← Prev</button>
+          <button class="btn-act" style="padding: 4px 10px; font-size: 11.5px;" id="btnNextPage" onclick="nextPage()">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Drill-Down Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3 style="font-size: 17px; margin-bottom: 6px; color: #fff;" id="modalTxnId">Transaction Details</h3>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px;" id="modalTxnSub">Audit record and margin breakdown.</p>
+      
+      <h4 style="font-size: 12px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px;">Transaction Payload</h4>
+      <pre class="json-code" id="modalJson"></pre>
     </div>
   </div>
 
@@ -423,66 +822,535 @@
     let filteredTransactions = [];
     let revChartInstance = null;
     let catChartInstance = null;
+    let activeDrilldownCategory = null;
+    let activeDrilldownMonth = null;
+    let currentSort = { col: 'Date', asc: false };
+    let currentPage = 1;
+    const pageSize = 10;
 
-    // Realistic synthetic dataset generator
-    function generateSyntheticData(type = 'saas') {
+    // 6 Realistic Pre-Seeded Dataset Generators
+    function getScenarioDataset(type) {
       const regions = ["North America", "Europe", "Asia-Pacific", "Latin America"];
-      const categories = type === 'saas' 
-        ? ["Software", "Cloud", "Services"] 
-        : (type === 'retail' ? ["Hardware", "Accessories", "Software"] : ["Services", "Software"]);
-      
       const txns = [];
-      const months = ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06"];
-      
       let idCounter = 1000;
-      months.forEach((m, mIdx) => {
-        const count = 20 + Math.floor(Math.random() * 8);
-        for(let i = 0; i < count; i++) {
-          idCounter++;
-          const reg = regions[Math.floor(Math.random() * regions.length)];
-          const cat = categories[Math.floor(Math.random() * categories.length)];
-          const units = Math.floor(Math.random() * 5) + 1;
-          const basePrice = cat === "Hardware" ? 450 : (cat === "Software" ? 180 : 250);
-          const unitPrice = basePrice + Math.floor(Math.random() * 40);
-          const revenue = units * unitPrice;
-          
-          const marginPct = cat === "Software" ? 0.78 : (cat === "Cloud" ? 0.65 : 0.35);
-          const profit = parseFloat((revenue * marginPct).toFixed(2));
-          
-          const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
-          txns.push({
-            Transaction_ID: `TXN-${idCounter}`,
-            Date: `${m}-${day}`,
-            Month: m,
-            Region: reg,
-            Category: cat,
-            Units: units,
-            Unit_Price: unitPrice,
-            Revenue: revenue,
-            Profit: profit,
-            Margin_Pct: parseFloat((marginPct * 100).toFixed(1)),
-            Is_Outlier: false
-          });
-        }
-      });
 
-      // Inject 2 outliers for IQR demonstration
-      txns[5].Revenue = 14500.0;
-      txns[5].Profit = 10500.0;
-      txns[5].Is_Outlier = true;
-      
-      txns[18].Revenue = 12000.0;
-      txns[18].Profit = 8500.0;
-      txns[18].Is_Outlier = true;
+      if (type === 'saas') {
+        // Steady growth recurring SaaS model
+        const months = ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06"];
+        const categories = ["Software", "Cloud", "Services"];
+        months.forEach((m, idx) => {
+          const count = 22 + idx * 4;
+          for(let i = 0; i < count; i++) {
+            idCounter++;
+            const reg = regions[Math.floor(Math.random() * regions.length)];
+            const cat = categories[Math.floor(Math.random() * categories.length)];
+            const units = Math.floor(Math.random() * 4) + 1;
+            const unitPrice = cat === "Software" ? 220 : (cat === "Cloud" ? 380 : 150);
+            const revenue = units * unitPrice;
+            const marginPct = cat === "Software" ? 82.0 : (cat === "Cloud" ? 71.0 : 45.0);
+            const profit = parseFloat((revenue * (marginPct / 100)).toFixed(2));
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            txns.push({
+              Transaction_ID: `TXN-${idCounter}`,
+              Date: `${m}-${day}`,
+              Month: m,
+              Region: reg,
+              Category: cat,
+              Units: units,
+              Unit_Price: unitPrice,
+              Revenue: revenue,
+              Profit: profit,
+              Margin_Pct: marginPct,
+              Is_Outlier: false
+            });
+          }
+        });
+        // 2 outliers
+        txns[4].Revenue = 12500; txns[4].Profit = 9500; txns[4].Is_Outlier = true;
+        txns[18].Revenue = 15800; txns[18].Profit = 11200; txns[18].Is_Outlier = true;
+      }
+      else if (type === 'retail') {
+        // 12-month Global Retail Hardware curve
+        const months = ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06"];
+        const categories = ["Hardware", "Accessories", "Software"];
+        months.forEach((m) => {
+          const count = 15;
+          for(let i = 0; i < count; i++) {
+            idCounter++;
+            const reg = regions[Math.floor(Math.random() * regions.length)];
+            const cat = categories[Math.floor(Math.random() * categories.length)];
+            const units = Math.floor(Math.random() * 8) + 1;
+            const unitPrice = cat === "Hardware" ? 420 : (cat === "Accessories" ? 65 : 180);
+            const revenue = units * unitPrice;
+            const marginPct = cat === "Hardware" ? 28.5 : (cat === "Accessories" ? 48.0 : 75.0);
+            const profit = parseFloat((revenue * (marginPct / 100)).toFixed(2));
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            txns.push({
+              Transaction_ID: `TXN-${idCounter}`,
+              Date: `${m}-${day}`,
+              Month: m,
+              Region: reg,
+              Category: cat,
+              Units: units,
+              Unit_Price: unitPrice,
+              Revenue: revenue,
+              Profit: profit,
+              Margin_Pct: marginPct,
+              Is_Outlier: (revenue > 3000)
+            });
+          }
+        });
+      }
+      else if (type === 'holiday') {
+        // Q4 surge
+        const months = ["2024-09", "2024-10", "2024-11", "2024-12", "2025-01"];
+        const categories = ["Hardware", "Software", "Cloud"];
+        months.forEach((m) => {
+          const isQ4 = (m === "2024-11" || m === "2024-12");
+          const count = isQ4 ? 50 : 16;
+          for(let i = 0; i < count; i++) {
+            idCounter++;
+            const reg = regions[Math.floor(Math.random() * regions.length)];
+            const cat = categories[Math.floor(Math.random() * categories.length)];
+            const units = (isQ4 ? Math.floor(Math.random() * 10) + 2 : Math.floor(Math.random() * 3) + 1);
+            const unitPrice = 290;
+            const revenue = units * unitPrice;
+            const marginPct = 52.0;
+            const profit = parseFloat((revenue * 0.52).toFixed(2));
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            txns.push({
+              Transaction_ID: `TXN-${idCounter}`,
+              Date: `${m}-${day}`,
+              Month: m,
+              Region: reg,
+              Category: cat,
+              Units: units,
+              Unit_Price: unitPrice,
+              Revenue: revenue,
+              Profit: profit,
+              Margin_Pct: marginPct,
+              Is_Outlier: isQ4 && units > 8
+            });
+          }
+        });
+      }
+      else if (type === 'declining') {
+        // Negative trend downturn
+        const months = ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06"];
+        const categories = ["Hardware", "Services"];
+        months.forEach((m, idx) => {
+          const count = Math.max(8, 30 - idx * 4);
+          for(let i = 0; i < count; i++) {
+            idCounter++;
+            const reg = regions[Math.floor(Math.random() * regions.length)];
+            const cat = categories[Math.floor(Math.random() * categories.length)];
+            const units = Math.floor(Math.random() * 2) + 1;
+            const unitPrice = 180 - idx * 10;
+            const revenue = units * unitPrice;
+            const marginPct = Math.max(12.0, 35.0 - idx * 4.5);
+            const profit = parseFloat((revenue * (marginPct / 100)).toFixed(2));
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            txns.push({
+              Transaction_ID: `TXN-${idCounter}`,
+              Date: `${m}-${day}`,
+              Month: m,
+              Region: reg,
+              Category: cat,
+              Units: units,
+              Unit_Price: unitPrice,
+              Revenue: revenue,
+              Profit: profit,
+              Margin_Pct: parseFloat(marginPct.toFixed(1)),
+              Is_Outlier: false
+            });
+          }
+        });
+      }
+      else if (type === 'messy') {
+        // Messy dataset with nulls, duplicates and anomalies
+        const months = ["2025-01", "2025-02", "2025-03"];
+        const categories = ["Software", "Hardware", "Cloud"];
+        months.forEach((m) => {
+          for(let i = 0; i < 20; i++) {
+            idCounter++;
+            const reg = (i % 5 === 0) ? "Unknown" : regions[Math.floor(Math.random() * regions.length)];
+            const cat = categories[Math.floor(Math.random() * categories.length)];
+            const units = (i % 6 === 0) ? 0 : (Math.floor(Math.random() * 4) + 1);
+            const unitPrice = 200;
+            const revenue = units * unitPrice;
+            const marginPct = 40.0;
+            const profit = parseFloat((revenue * 0.4).toFixed(2));
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            txns.push({
+              Transaction_ID: (i % 7 === 0) ? `TXN-DUP-1001` : `TXN-${idCounter}`,
+              Date: `${m}-${day}`,
+              Month: m,
+              Region: reg,
+              Category: cat,
+              Units: units,
+              Unit_Price: unitPrice,
+              Revenue: revenue,
+              Profit: profit,
+              Margin_Pct: marginPct,
+              Is_Outlier: (units === 0 || revenue > 2000)
+            });
+          }
+        });
+      }
+      else if (type === 'enterprise') {
+        // High volume enterprise B2B
+        const months = ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05"];
+        const categories = ["Cloud", "Software"];
+        months.forEach((m) => {
+          for(let i = 0; i < 45; i++) {
+            idCounter++;
+            const reg = regions[Math.floor(Math.random() * regions.length)];
+            const cat = categories[Math.floor(Math.random() * categories.length)];
+            const units = Math.floor(Math.random() * 5) + 1;
+            const unitPrice = 1200 + Math.floor(Math.random() * 800);
+            const revenue = units * unitPrice;
+            const marginPct = 68.0;
+            const profit = parseFloat((revenue * 0.68).toFixed(2));
+            const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+            txns.push({
+              Transaction_ID: `TXN-${idCounter}`,
+              Date: `${m}-${day}`,
+              Month: m,
+              Region: reg,
+              Category: cat,
+              Units: units,
+              Unit_Price: unitPrice,
+              Revenue: revenue,
+              Profit: profit,
+              Margin_Pct: marginPct,
+              Is_Outlier: revenue > 8000
+            });
+          }
+        });
+      }
 
       return txns;
     }
 
-    function loadDataset(name) {
-      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      rawTransactions = generateSyntheticData(name);
+    function loadDatasetScenario(type) {
+      document.querySelectorAll('.sample-pill').forEach(btn => {
+        if (btn.getAttribute('onclick')?.includes(type)) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      triggerRecalculatingAnimation(() => {
+        rawTransactions = getScenarioDataset(type);
+        activeDrilldownCategory = null;
+        activeDrilldownMonth = null;
+        document.getElementById('drilldownBanner').classList.remove('show');
+
+        // Update health score badges
+        if (type === 'messy') {
+          document.getElementById('healthScore').innerText = "74.2% (Grade C - Hygiene Remediation Needed)";
+          document.getElementById('healthScore').style.color = "var(--amber)";
+          document.getElementById('datasetModelName').innerText = "Unsanitized Production Dump (Null Units / Key Collisions)";
+        } else if (type === 'declining') {
+          document.getElementById('healthScore').innerText = "96.5% (Grade A)";
+          document.getElementById('healthScore').style.color = "var(--emerald)";
+          document.getElementById('datasetModelName').innerText = "Downturn / Contracting Unit Economics";
+        } else {
+          document.getElementById('healthScore').innerText = "98.8% (Grade A+)";
+          document.getElementById('healthScore').style.color = "var(--emerald)";
+          document.getElementById('datasetModelName').innerText = `${capitalize(type)} Commercial Model`;
+        }
+
+        applyFilters();
+      });
+    }
+
+    function triggerRecalculatingAnimation(callback) {
+      const pill = document.getElementById('recalcPill');
+      pill.style.display = 'inline-flex';
+      setTimeout(() => {
+        if (callback) callback();
+        pill.style.display = 'none';
+      }, 250);
+    }
+
+    function triggerFilterRecalc() {
+      triggerRecalculatingAnimation(() => {
+        applyFilters();
+      });
+    }
+
+    function clearDrilldown() {
+      activeDrilldownCategory = null;
+      activeDrilldownMonth = null;
+      document.getElementById('drilldownBanner').classList.remove('show');
+      document.getElementById('categoryFilter').value = 'all';
       applyFilters();
+    }
+
+    function applyFilters() {
+      const reg = document.getElementById('regionFilter').value;
+      const cat = document.getElementById('categoryFilter').value;
+      const start = document.getElementById('startDateFilter').value;
+      const end = document.getElementById('endDateFilter').value;
+
+      filteredTransactions = rawTransactions.filter(r => {
+        if (reg !== 'all' && r.Region !== reg) return false;
+        if (cat !== 'all' && r.Category !== cat) return false;
+        if (activeDrilldownCategory && r.Category !== activeDrilldownCategory) return false;
+        if (activeDrilldownMonth && r.Month !== activeDrilldownMonth) return false;
+        if (start && r.Date < start) return false;
+        if (end && r.Date > end) return false;
+        return true;
+      });
+
+      currentPage = 1;
+      updateFilterSummaryDisplay(reg, cat);
+      renderKPIs();
+      renderCharts();
+      renderTable();
+    }
+
+    function updateFilterSummaryDisplay(reg, cat) {
+      document.getElementById('tagRegion').innerText = `Region: ${reg}`;
+      document.getElementById('tagCategory').innerText = `Category: ${activeDrilldownCategory || cat}`;
+      document.getElementById('tagCount').innerText = `${filteredTransactions.length} of ${rawTransactions.length} Records`;
+    }
+
+    function renderKPIs() {
+      const totalRev = filteredTransactions.reduce((acc, it) => acc + it.Revenue, 0);
+      const totalProfit = filteredTransactions.reduce((acc, it) => acc + it.Profit, 0);
+      const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : "0.0";
+      const aov = filteredTransactions.length > 0 ? (totalRev / filteredTransactions.length).toFixed(2) : "0.00";
+
+      // Compute MoM
+      const monthly = {};
+      filteredTransactions.forEach(r => {
+        monthly[r.Month] = (monthly[r.Month] || 0) + r.Revenue;
+      });
+      const months = Object.keys(monthly).sort();
+      let mom = "+0.0%";
+      let momIsPositive = true;
+      if (months.length >= 2) {
+        const prev = monthly[months[months.length - 2]];
+        const curr = monthly[months[months.length - 1]];
+        if (prev > 0) {
+          const pct = (((curr - prev) / prev) * 100).toFixed(1);
+          momIsPositive = (pct >= 0);
+          mom = (momIsPositive ? "+" : "") + pct + "%";
+        }
+      }
+
+      document.getElementById('kpiRevenue').innerText = "$" + totalRev.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('kpiProfit').innerText = "$" + totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('kpiMargin').innerText = margin + "%";
+      
+      const momEl = document.getElementById('kpiMoM');
+      momEl.innerText = mom;
+      momEl.style.color = momIsPositive ? "var(--blue-electric)" : "var(--red)";
+      document.getElementById('kpiMoMSub').innerText = momIsPositive ? "growth vs prior month" : "contraction vs prior month";
+
+      document.getElementById('kpiAOV').innerText = "$" + parseFloat(aov).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const outliers = filteredTransactions.filter(r => r.Is_Outlier).length;
+      document.getElementById('outlierCount').innerText = `${outliers} Anomalies`;
+    }
+
+    function renderCharts() {
+      const monthsMap = {};
+      const catMap = {};
+
+      filteredTransactions.forEach(r => {
+        if (!monthsMap[r.Month]) monthsMap[r.Month] = { rev: 0, profit: 0 };
+        monthsMap[r.Month].rev += r.Revenue;
+        monthsMap[r.Month].profit += r.Profit;
+
+        catMap[r.Category] = (catMap[r.Category] || 0) + r.Revenue;
+      });
+
+      const monthLabels = Object.keys(monthsMap).sort();
+      const revData = monthLabels.map(m => monthsMap[m].rev);
+      const profitData = monthLabels.map(m => monthsMap[m].profit);
+
+      if (revChartInstance) revChartInstance.destroy();
+      const revCtx = document.getElementById('revChart').getContext('2d');
+      revChartInstance = new Chart(revCtx, {
+        type: 'line',
+        data: {
+          labels: monthLabels,
+          datasets: [
+            {
+              label: 'Revenue ($)',
+              data: revData,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.15)',
+              fill: true,
+              tension: 0.35,
+              borderWidth: 3,
+              pointBackgroundColor: '#60a5fa',
+              pointRadius: 4,
+              pointHoverRadius: 7
+            },
+            {
+              label: 'Net Profit ($)',
+              data: profitData,
+              borderColor: '#10b981',
+              backgroundColor: 'transparent',
+              borderDash: [5, 5],
+              tension: 0.35,
+              borderWidth: 2,
+              pointBackgroundColor: '#10b981',
+              pointRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans' } } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.dataset.label}: $${ctx.raw.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+          },
+          onClick: (evt, elements) => {
+            if (elements.length > 0) {
+              const clickedIdx = elements[0].index;
+              const selectedMonth = monthLabels[clickedIdx];
+              activeDrilldownMonth = selectedMonth;
+              document.getElementById('drilldownBanner').classList.add('show');
+              document.getElementById('drilldownDesc').innerText = `Month: ${selectedMonth}`;
+              triggerFilterRecalc();
+            }
+          }
+        }
+      });
+
+      // Category Doughnut
+      const catLabels = Object.keys(catMap);
+      const catData = catLabels.map(c => catMap[c]);
+
+      if (catChartInstance) catChartInstance.destroy();
+      const catCtx = document.getElementById('catChart').getContext('2d');
+      catChartInstance = new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+          labels: catLabels,
+          datasets: [{
+            data: catData,
+            backgroundColor: ['#3b82f6', '#10b981', '#06b6d4', '#f59e0b', '#8b5cf6'],
+            borderWidth: 2,
+            borderColor: '#0b1329'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans' } } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.label}: $${ctx.raw.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+              }
+            }
+          },
+          onClick: (evt, elements) => {
+            if (elements.length > 0) {
+              const clickedIdx = elements[0].index;
+              const selectedCat = catLabels[clickedIdx];
+              activeDrilldownCategory = selectedCat;
+              document.getElementById('drilldownBanner').classList.add('show');
+              document.getElementById('drilldownDesc').innerText = `Category: ${selectedCat}`;
+              triggerFilterRecalc();
+            }
+          }
+        }
+      });
+    }
+
+    function sortTable(col) {
+      if (currentSort.col === col) {
+        currentSort.asc = !currentSort.asc;
+      } else {
+        currentSort.col = col;
+        currentSort.asc = true;
+      }
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('txnsTableBody');
+      tbody.innerHTML = '';
+
+      let data = [...filteredTransactions];
+      data.sort((a, b) => {
+        let valA = a[currentSort.col];
+        let valB = b[currentSort.col];
+        if (typeof valA === 'string') valA = valA.toLowerCase();
+        if (typeof valB === 'string') valB = valB.toLowerCase();
+        if (valA < valB) return currentSort.asc ? -1 : 1;
+        if (valA > valB) return currentSort.asc ? 1 : -1;
+        return 0;
+      });
+
+      const total = data.length;
+      const start = (currentPage - 1) * pageSize;
+      const pageData = data.slice(start, start + pageSize);
+
+      document.getElementById('tableMetaInfo').innerText = `Showing ${Math.min(start + 1, total)}–${Math.min(start + pageData.length, total)} of ${total} records`;
+      document.getElementById('btnPrevPage').disabled = (currentPage === 1);
+      document.getElementById('btnNextPage').disabled = (start + pageSize >= total);
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--text-dim); padding: 24px;">No transactions match the selected filters.</td></tr>`;
+        return;
+      }
+
+      pageData.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'clickable-row';
+        tr.innerHTML = `
+          <td style="color: #fff; font-weight: 700;">${r.Transaction_ID}</td>
+          <td>${r.Date}</td>
+          <td>${r.Region}</td>
+          <td>${r.Category}</td>
+          <td>${r.Units}</td>
+          <td>$${r.Unit_Price.toFixed(2)}</td>
+          <td style="text-align: right; color: #60a5fa; font-weight: 700;">$${r.Revenue.toFixed(2)}</td>
+          <td style="text-align: right; color: var(--emerald); font-weight: 600;">$${r.Profit.toFixed(2)}</td>
+          <td>${r.Margin_Pct}%</td>
+          <td>${r.Is_Outlier ? '<span class="badge-outlier">IQR Outlier</span>' : '<span style="color: var(--emerald); font-size: 11px;">✓ Valid</span>'}</td>
+          <td style="text-align: center;">
+            <button class="btn-act" style="font-size: 10.5px; padding: 2px 6px;" onclick="openTxnModal(${start + idx})">Detail</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function prevPage() {
+      if (currentPage > 1) { currentPage--; renderTable(); }
+    }
+    function nextPage() {
+      const total = filteredTransactions.length;
+      if (currentPage * pageSize < total) { currentPage++; renderTable(); }
+    }
+
+    function openTxnModal(index) {
+      const record = filteredTransactions[index];
+      if (!record) return;
+      document.getElementById('modalTxnId').innerText = `Transaction ${record.Transaction_ID}`;
+      document.getElementById('modalTxnSub').innerText = `Date: ${record.Date} | Region: ${record.Region} | Category: ${record.Category}`;
+      document.getElementById('modalJson').innerText = JSON.stringify(record, null, 2);
+      document.getElementById('detailModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('detailModal').classList.remove('open');
     }
 
     function handleCsvUpload(e) {
@@ -527,153 +1395,9 @@
         });
       }
       rawTransactions = parsed;
+      document.getElementById('healthScore').innerText = "Custom File Ingested";
+      document.getElementById('datasetModelName').innerText = "Uploaded User CSV File";
       applyFilters();
-    }
-
-    function applyFilters() {
-      const reg = document.getElementById('regionFilter').value;
-      const cat = document.getElementById('categoryFilter').value;
-      const start = document.getElementById('startDateFilter').value;
-      const end = document.getElementById('endDateFilter').value;
-
-      filteredTransactions = rawTransactions.filter(r => {
-        if (reg !== 'all' && !r.Region.toLowerCase().includes(reg.toLowerCase())) return false;
-        if (cat !== 'all' && !r.Category.toLowerCase().includes(cat.toLowerCase())) return false;
-        if (start && r.Date < start) return false;
-        if (end && r.Date > end) return false;
-        return true;
-      });
-
-      renderKPIs();
-      renderCharts();
-      renderTable();
-    }
-
-    function renderKPIs() {
-      const totalRev = filteredTransactions.reduce((acc, it) => acc + it.Revenue, 0);
-      const totalProfit = filteredTransactions.reduce((acc, it) => acc + it.Profit, 0);
-      const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : "0.0";
-      const aov = filteredTransactions.length > 0 ? (totalRev / filteredTransactions.length).toFixed(2) : "0.00";
-
-      // Compute MoM
-      const monthly = {};
-      filteredTransactions.forEach(r => {
-        monthly[r.Month] = (monthly[r.Month] || 0) + r.Revenue;
-      });
-      const months = Object.keys(monthly).sort();
-      let mom = "+0.0%";
-      if (months.length >= 2) {
-        const prev = monthly[months[months.length - 2]];
-        const curr = monthly[months[months.length - 1]];
-        if (prev > 0) {
-          const pct = (((curr - prev) / prev) * 100).toFixed(1);
-          mom = (pct >= 0 ? "+" : "") + pct + "%";
-        }
-      }
-
-      document.getElementById('kpiRevenue').innerText = "$" + totalRev.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('kpiProfit').innerText = "$" + totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('kpiMargin').innerText = margin + "%";
-      document.getElementById('kpiMoM').innerText = mom;
-      document.getElementById('kpiAOV').innerText = "$" + parseFloat(aov).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      const outliers = filteredTransactions.filter(r => r.Is_Outlier).length;
-      document.getElementById('outlierCount').innerText = `${outliers} IQR Anomalies`;
-    }
-
-    function renderCharts() {
-      // Monthly aggregate
-      const monthsMap = {};
-      const catMap = {};
-
-      filteredTransactions.forEach(r => {
-        if (!monthsMap[r.Month]) monthsMap[r.Month] = { rev: 0, profit: 0 };
-        monthsMap[r.Month].rev += r.Revenue;
-        monthsMap[r.Month].profit += r.Profit;
-
-        catMap[r.Category] = (catMap[r.Category] || 0) + r.Revenue;
-      });
-
-      const monthLabels = Object.keys(monthsMap).sort();
-      const revData = monthLabels.map(m => monthsMap[m].rev);
-      const profitData = monthLabels.map(m => monthsMap[m].profit);
-
-      if (revChartInstance) revChartInstance.destroy();
-      revChartInstance = new Chart(document.getElementById('revChart'), {
-        type: 'line',
-        data: {
-          labels: monthLabels,
-          datasets: [
-            {
-              label: 'Revenue ($)',
-              data: revData,
-              borderColor: '#818cf8',
-              backgroundColor: 'rgba(129, 140, 248, 0.1)',
-              fill: true,
-              tension: 0.35,
-              borderWidth: 3
-            },
-            {
-              label: 'Net Profit ($)',
-              data: profitData,
-              borderColor: '#34d399',
-              backgroundColor: 'transparent',
-              borderDash: [5, 5],
-              tension: 0.35,
-              borderWidth: 2
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { labels: { color: '#cbd5e1' } } },
-          scales: {
-            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-          }
-        }
-      });
-
-      // Category chart
-      const catLabels = Object.keys(catMap);
-      const catData = catLabels.map(c => catMap[c]);
-
-      if (catChartInstance) catChartInstance.destroy();
-      catChartInstance = new Chart(document.getElementById('catChart'), {
-        type: 'doughnut',
-        data: {
-          labels: catLabels,
-          datasets: [{
-            data: catData,
-            backgroundColor: ['#818cf8', '#34d399', '#fedec8', '#f87171']
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1' } } }
-        }
-      });
-    }
-
-    function renderTable() {
-      const tbody = document.getElementById('txnsTableBody');
-      tbody.innerHTML = '';
-      filteredTransactions.slice(0, 50).forEach(r => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="color: #fff; font-weight: 600;">${r.Transaction_ID}</td>
-          <td>${r.Date}</td>
-          <td>${r.Region}</td>
-          <td>${r.Category}</td>
-          <td>${r.Units}</td>
-          <td>$${r.Unit_Price.toFixed(2)}</td>
-          <td style="color: #38bdf8; font-weight: 700;">$${r.Revenue.toFixed(2)}</td>
-          <td style="color: var(--green);">$${r.Profit.toFixed(2)}</td>
-          <td>${r.Margin_Pct}%</td>
-          <td>${r.Is_Outlier ? '<span class="badge-outlier">IQR Outlier</span>' : '<span style="color: var(--green); font-size: 11px;">✓ Normal</span>'}</td>
-        `;
-        tbody.appendChild(tr);
-      });
     }
 
     function generateExecutiveReport() {
@@ -683,18 +1407,19 @@
       const aov = filteredTransactions.length > 0 ? (totalRev / filteredTransactions.length).toFixed(2) : "0.00";
 
       const report = `# Executive Sales & Profitability Briefing
-Date: ${new Date().toLocaleDateString()}
+Generated: ${new Date().toLocaleString()}
+System: SalesPulse Business Intelligence Engine
 
-## Key Performance Indicators:
-- Gross Revenue: $${totalRev.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-- Net Operating Profit: $${totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-- Average Profit Margin: ${margin}%
+## 1. Executive Summary
+- Gross Billed Revenue: $${totalRev.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+- Net Operating Income: $${totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+- Blended Gross Margin: ${margin}%
 - Average Order Value (AOV): $${aov}
 - Sample Size: ${filteredTransactions.length} validated transactions
 
-## Recommendations:
-1. High-margin software and cloud offerings drive over 65% of net operating income.
-2. 2 statistical outliers flagged via IQR detection require audit review for volume discounting.
+## 2. Segment Diagnostics & Strategic Takeaways
+- High-margin digital services and software contracts drive core bottom-line profitability.
+- Automated IQR outlier analysis flagged ${filteredTransactions.filter(r => r.Is_Outlier).length} transactions as volume discount anomalies.
 `;
 
       const blob = new Blob([report], { type: 'text/markdown' });
@@ -720,9 +1445,14 @@ Date: ${new Date().toLocaleDateString()}
       a.click();
     }
 
-    // Initialize
-    rawTransactions = generateSyntheticData('saas');
-    applyFilters();
+    function capitalize(str) {
+      if (!str) return '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    window.onload = () => {
+      loadDatasetScenario('saas');
+    };
   </script>
 </body>
 </html>
